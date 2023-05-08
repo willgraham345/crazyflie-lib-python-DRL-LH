@@ -69,7 +69,7 @@ from cflib.localization.lighthouse_types import LhMeasurement
 from cflib.localization.lighthouse_types import Pose
 from cflib.utils import uri_helper
 
-REFERENCE_DIST = 1.0
+REFERENCE_DIST = 0.3  # m
 
 
 def record_angles_average(scf: SyncCrazyflie) -> LhCfPoseSample:
@@ -179,14 +179,18 @@ def visualize(cf_poses: list[Pose], bs_poses: list[Pose]):
     """Visualize positions of base stations and Crazyflie positions"""
     # Set to True to visualize positions
     # Requires PyPlot
-    visualize_positions = False
+    visualize_positions = True
     if visualize_positions:
         import matplotlib.pyplot as plt
+        from mpl_toolkits.mplot3d import Axes3D # <--- This is important for 3d plotting 
 
         positions = np.array(list(map(lambda x: x.translation, cf_poses)))
 
         fig = plt.figure()
-        ax = fig.add_subplot(projection='3d')
+        ax = fig.gca(projection='3d')
+
+        # ax = fig.add_subplot(projection='3d')
+        
 
         x_cf = positions[:, 0]
         y_cf = positions[:, 1]

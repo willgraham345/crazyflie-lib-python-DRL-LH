@@ -108,7 +108,7 @@ class LighthouseBsGeoEstimator:
 
         guess_yaw = self._find_initial_yaw_guess(bs_vectors)
         rvec_guess, tvec_guess = self._convert_yaw_to_open_cv(guess_yaw)
-        rw_ocv, tw_ocv = self._estimate_pose_by_pnp(bs_vectors, rvec_guess, tvec_guess)
+        rw_ocv, tw_ocv = self._estimate_pose_by_pnp(bs_vectors, rvec_guess, tvec_guess) # Sensors as "seen" by the camera
         rot_bs_in_cf_coord, pos_bs_in_cf_coord = self._opencv_to_cf(rw_ocv, tw_ocv)
         return rot_bs_in_cf_coord, pos_bs_in_cf_coord
 
@@ -212,7 +212,7 @@ class LighthouseBsGeoEstimator:
         tvec_w = -np.matmul(R_w, tvec_c)
         return R_w, tvec_w
 
-    def _opencv_to_cf(self, R_cv, t_cv):
+    def _opencv_to_cf(self, R_cv, t_cv): # I think this is where we're supposed to be looking
         R_opencv_to_cf = np.array([
             [0.0, 0.0, 1.0],
             [-1.0, 0.0, 0.0],
